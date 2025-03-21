@@ -176,8 +176,8 @@ def process_channel_regular_mode(channel, db, fee_calculator, data_analyzer, fix
             new_inbound_fee = latest_data.local_infee
             new_local_fee = int(latest_data.local_fee * 0.9 - new_inbound_fee)
 
-            if new_local_fee < 1:
-                new_local_fee = 1
+            if new_local_fee < -inboundFee_base:
+                new_local_fee = -inboundFee_base
                 
             print(f"Decreasing local fee {latest_data.local_fee} --> {new_local_fee} for channel {channel.channel_name} (ratio: {local_balance_ratio:.2f})")
             fee_calculator.set_fee_api(channel, new_local_fee, new_inbound_fee, latest_data.local_balance)
