@@ -1,4 +1,4 @@
-#Lightning Network 手数料マネージャー
+# Lightning Network 手数料マネージャー
 
 このプロジェクトは、SQLiteデータベースに保存された履歴データを使用して、Lightning Networkのチャネル手数料を管理・計算することを目的としています。アプリケーションはチャネルデータを取得し、分析して、事前に定義された設定や条件に基づいて手数料を調整します。
 
@@ -41,7 +41,7 @@ cd ln_fee_manager
 
 2. Poetryを使用して依存関係をインストールします：
    ```
-poetry install
+   poetry install
    ```
 
    Poetryがインストールされていない場合は、先に以下のコマンドでインストールしてください：
