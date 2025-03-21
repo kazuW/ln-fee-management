@@ -1,0 +1,6 @@
+*.lock
+*pycache*/
+logs/
+data/
+.venv/
+src/config.py
