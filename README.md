@@ -35,8 +35,8 @@ ln_fee_manager
 
 1. リポジトリをクローンします：
    ```
-git clone <リポジトリURL>
-cd ln_fee_manager
+   git clone <リポジトリURL>
+   cd ln_fee_manager
    ```
 
 2. Poetryを使用して依存関係をインストールします：
