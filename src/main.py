@@ -174,7 +174,7 @@ def process_channel_regular_mode(channel, db, fee_calculator, data_analyzer, fix
         if local_balance_ratio >= fee_decreasing_threshold and within_tolerance and same_localfee:
 
             new_inbound_fee = latest_data.local_infee
-            new_local_fee = int(latest_data.local_fee * 0.9 - new_inbound_fee)
+            new_local_fee = int((latest_data.local_fee + inboundFee_base) * 0.9 - inboundFee_base)
 
             if new_local_fee < -inboundFee_base:
                 new_local_fee = -inboundFee_base
