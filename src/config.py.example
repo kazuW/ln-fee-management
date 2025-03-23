@@ -1,0 +1,19 @@
+#database_file = "D:/****...****/ln-fee-manager/data/lightning_node.db"
+database_file = "D:/****...****/ln-fee-manager/data/lightning_node.db"
+fixed_channel_list = "D:/****...****/ln-fee-manager/data/fixed_channel_list.csv"
+control_channel_list = "D:/****...****/ln-fee-manager/data/control_channel_list.csv"
+api_url = "https://127.0.0.1:8080"  # Replace with your Lightning node API URL
+#macaroon_path = "C:/Users/user/AppData/Local/Lnd/data/chain/bitcoin/mainnet/admin.macaroon"  # macaroon path
+macaroon_path = "C:/Users/user/AppData/Local/Lnd/data/chain/bitcoin/testnet/admin.macaroon"  # macaroon path
+tls_path = "C:/Users/user/AppData/Local/Lnd/tls.cert"  # tls path
+basefee_msat = 498
+time_lock_delta = 144
+
+inboundFee_base = -1000
+#inboundFee_base = 0
+inboundFee_ratio = [1, 1, 1, 0.9, 0.7]
+LocalFee_ratio = [1.2, 1, 0.8, 0.6, 0.4]
+data_period = 8
+fee_decreasing_threshold = 0.5
+
+Debug_mode = True
