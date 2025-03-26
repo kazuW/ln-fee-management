@@ -110,7 +110,14 @@ def process_channel_initial_mode(channel, db, fee_calculator, fixed_channels, co
         ratio_index = min(int(local_balance_ratio * 5), 4)
         
         # Set inbound fee based on ratio
-        inbound_fee = int(inboundFee_base * inboundFee_ratio[ratio_index])
+        if latest_data.amboss_fee is not None:
+            if latest_data.amboss_fee > 5000:
+                latest_data.amboss_fee = 5000
+
+            inbound_fee = int(inboundFee_base + (latest_data.amboss_fee * inboundFee_ratio[ratio_index]))
+
+            if inbound_fee > 0:
+                inbound_fee = 0
         
         # Set local fee based on amboss fee and ratio
         if latest_data.amboss_fee is not None:
@@ -186,8 +193,15 @@ def process_channel_regular_mode(channel, db, fee_calculator, data_analyzer, fix
             ratio_index = min(int(local_balance_ratio * 5), 4)
             
             # Set inbound fee based on ratio
-            new_inbound_fee = int(inboundFee_base * inboundFee_ratio[ratio_index])
+            if latest_data.amboss_fee is not None:
+                if latest_data.amboss_fee > 5000:
+                    latest_data.amboss_fee = 5000
+                
+                new_inbound_fee = int(inboundFee_base + (latest_data.amboss_fee * inboundFee_ratio[ratio_index]))
         
+            if inbound_fee > 0:
+                inbound_fee = 0
+
             # Set local fee based on amboss fee and ratio
             if latest_data.amboss_fee is not None:
                 if latest_data.amboss_fee > 5000:
