@@ -199,8 +199,8 @@ def process_channel_regular_mode(channel, db, fee_calculator, data_analyzer, fix
                 
                 new_inbound_fee = int(inboundFee_base + (latest_data.amboss_fee * inboundFee_ratio[ratio_index]))
         
-            if inbound_fee > 0:
-                inbound_fee = 0
+            if new_inbound_fee > 0:
+                new_inbound_fee = 0
 
             # Set local fee based on amboss fee and ratio
             if latest_data.amboss_fee is not None:
