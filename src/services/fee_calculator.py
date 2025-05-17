@@ -2,17 +2,9 @@ import requests
 import codecs
 import json
 import os
-from config import (
-    api_url,
-    macaroon_path,
-    tls_path,
-    basefee_msat,
-    time_lock_delta,
-    Debug_mode
-)
 
 class FeeCalculator:
-    def __init__(self, config=None, db_connection=None):
+    def __init__(self, config, db_connection):
         """
         Initialize FeeCalculator with optional config and database connection
         
@@ -22,6 +14,12 @@ class FeeCalculator:
         """
         self.config = config
         self.db_connection = db_connection
+        # API関連の設定を取得
+        self.api_url = config.get_api_url() if config else None
+        self.macaroon_path = config.get_macaroon_path() if config else None
+        self.tls_path = config.get_tls_path() if config else None
+        self.basefee_msat = config.get_basefee_msat() if config else 0
+        self.time_lock_delta = config.get_time_lock_delta() if config else 0
 
     def get_latest_data(self, channel_id):
         # This method should retrieve the latest data for the given channel_id from the database
@@ -43,8 +41,9 @@ class FeeCalculator:
 
         max_htlc_msat = int(local_balance / 3 * 2 * 1000)
 
-        url = f'{api_url}/v1/chanpolicy'
-        macaroon = codecs.encode(open(macaroon_path, 'rb').read(), 'hex')
+        # グローバル変数ではなくインスタンス変数を使用
+        url = f'{self.api_url}/v1/chanpolicy'
+        macaroon = codecs.encode(open(self.macaroon_path, 'rb').read(), 'hex')
         headers = {'Grpc-Metadata-macaroon': macaroon}
 
         inboundFee = {
@@ -59,17 +58,20 @@ class FeeCalculator:
             'funding_txid_str': funding_txid_str,
             'output_index': output_index
         }
-  
+
         data = {
             'chan_point': channelPoint, #<ChannelPoint>
-            'base_fee_msat': basefee_msat,  #<int64>
+            'base_fee_msat': self.basefee_msat,  #<int64>
             'fee_rate_ppm':  fee,           #<uint32>
-            'time_lock_delta': time_lock_delta, #<uint32>
+            'time_lock_delta': self.time_lock_delta, #<uint32>
             'max_htlc_msat': max_htlc_msat,     #<uint64>
             'inbound_fee': inboundFee,           #<InboundFee>
         }
 
-        if Debug_mode:
+        # Debug_modeもconfigから取得
+        debug_mode = self.config.get_debug_mode() if hasattr(self.config, 'get_debug_mode') else False
+        
+        if debug_mode:
             #print data
             print(f"Setting done for channel {channel.channel_name}: {channel.channel_id}")
             print("#### data ####")
@@ -79,7 +81,7 @@ class FeeCalculator:
 
         # 既存のreturnを削除し、APIリクエストを実装
         try:
-            response = requests.post(url, headers=headers, data=json.dumps(data), verify=tls_path)  # TLS_PATH → tls_path に修正
+            response = requests.post(url, headers=headers, data=json.dumps(data), verify=self.tls_path)
             response.raise_for_status()
             print(f"Setting done for channel {channel.channel_name}: {channel.channel_id}")
         except requests.exceptions.RequestException as e:

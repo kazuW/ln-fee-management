@@ -5,16 +5,20 @@ import sys
 import io
 import os
 
-from config import (
-    database_file,
-    fixed_channel_list,
-    control_channel_list,
-    inboundFee_base,
-    inboundFee_ratio,
-    LocalFee_ratio,
-    data_period,
-    fee_decreasing_threshold
-)
+# config.pyからのインポートを削除
+# from config import (
+#     database_file,
+#     fixed_channel_list,
+#     control_channel_list,
+#     inboundFee_base,
+#     inboundFee_ratio,
+#     LocalFee_ratio,
+#     data_period,
+#     fee_decreasing_threshold
+# )
+
+# 代わりにConfigLoaderをインポート
+from services.config_loader import ConfigLoader
 from db.database import Database
 from services.fee_calculator import FeeCalculator
 from services.data_analyzer import DataAnalyzer
@@ -27,7 +31,25 @@ def main():
     parser = argparse.ArgumentParser(description='Lightning Network Fee Manager')
     parser.add_argument('--initial', action='store_true', help='Initial fee setup mode')
     parser.add_argument('--channel_download', action='store_true', help='Download all channel info to CSV')
+    parser.add_argument('--config', help='Path to configuration file')
     args = parser.parse_args()
+
+    # 設定ファイルの読み込み
+    try:
+        config_loader = ConfigLoader(args.config if args.config else None)
+    except FileNotFoundError as e:
+        print(f"エラー: {e}")
+        return
+
+    # 設定値を取得
+    database_file = config_loader.get_database_file()
+    fixed_channel_list = config_loader.get_fixed_channel_list()
+    control_channel_list = config_loader.get_control_channel_list()
+    inboundFee_base = config_loader.get_inboundFee_base()
+    inboundFee_ratio = config_loader.get_inboundFee_ratio()
+    LocalFee_ratio = config_loader.get_LocalFee_ratio()
+    data_period = config_loader.get_data_period()
+    fee_decreasing_threshold = config_loader.get_fee_decreasing_threshold()
 
     db = Database(database_file)
     db.connect()
@@ -40,8 +62,8 @@ def main():
     print(f"Loaded {len(control_channels)} control channels...")
 
     # Initialize fee calculator and data analyzer
-    fee_calculator = FeeCalculator(config=None, db_connection=db.conn)
-    data_analyzer = DataAnalyzer(db_connection=db.conn, config=None)
+    fee_calculator = FeeCalculator(config=config_loader, db_connection=db.conn)
+    data_analyzer = DataAnalyzer(db_connection=db.conn, config=config_loader)
 
     # Process channels
     channels = db.get_channels()

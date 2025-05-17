@@ -1,5 +1,5 @@
 class DataAnalyzer:
-    def __init__(self, db_connection=None, config=None):
+    def __init__(self, db_connection, config):
         """
         Initialize DataAnalyzer with optional database connection and configuration
         
@@ -9,6 +9,7 @@ class DataAnalyzer:
         """
         self.db_connection = db_connection
         self.config = config
+        self.data_period = config.get_data_period() if config else 8
 
     def analyze_channel_data(self, channel_id):
         # Fetch the latest data for the given channel_id
