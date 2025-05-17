@@ -41,7 +41,7 @@ class FeeCalculator:
             print(f"parameter error infee={infee}")
             return False
 
-        max_htlc_msat = int(local_balance / 2 * 1000)
+        max_htlc_msat = int(local_balance / 3 * 2 * 1000)
 
         url = f'{api_url}/v1/chanpolicy'
         macaroon = codecs.encode(open(macaroon_path, 'rb').read(), 'hex')
