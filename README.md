@@ -52,7 +52,8 @@ ln_fee_manager
 
 ## 設定
 
-アプリケーションは設定ファイル（src/config.py）を使用して、以下のようなさまざまなパラメータを設定します：
+アプリケーションは設定ファイル（src/config.py）を使用して、以下のようなさまざまなパラメータを設定します： ＜ーー廃止
+"ln-fee-manager.conf"にて設定するように変更
 
 - `fixed_channel_list：固定手数料を持つチャネルを含むCSVファイル
 - `control_channel_list：制御対象チャネルを含むCSVファイル
