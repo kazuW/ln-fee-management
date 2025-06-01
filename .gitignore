@@ -1,6 +1,13 @@
 *.lock
 *pycache*/
+*.toml
 logs/
 data/
 .venv/
 src/config.py
+build/
+dist/
+log/
+LnFeeManage.bat
+compile.txt
+main.spec

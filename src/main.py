@@ -26,7 +26,21 @@ from services.data_analyzer import DataAnalyzer
 # エンコーディングを設定
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
+# グローバル変数として宣言
+database_file = None
+fixed_channel_list = None
+control_channel_list = None
+inboundFee_base = None
+inboundFee_ratio = None
+LocalFee_ratio = None
+data_period = None
+fee_decreasing_threshold = None
+
 def main():
+    global database_file, fixed_channel_list, control_channel_list
+    global inboundFee_base, inboundFee_ratio, LocalFee_ratio
+    global data_period, fee_decreasing_threshold
+
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Lightning Network Fee Manager')
     parser.add_argument('--initial', action='store_true', help='Initial fee setup mode')
@@ -51,6 +65,16 @@ def main():
     data_period = config_loader.get_data_period()
     fee_decreasing_threshold = config_loader.get_fee_decreasing_threshold()
 
+    #print(f"Using database file: {database_file}")
+    #print(f"Using fixed channel list: {fixed_channel_list}")
+    #print(f"Using control channel list: {control_channel_list}")
+    #print(f"Inbound fee base: {inboundFee_base}")
+    #print(f"Inbound fee ratio: {inboundFee_ratio}")
+    #print(f"Local fee ratio: {LocalFee_ratio}")
+    #print(f"Data period: {data_period}")
+    #print(f"Fee decreasing threshold: {fee_decreasing_threshold}")
+    
+    # Connect to the database
     db = Database(database_file)
     db.connect()
 

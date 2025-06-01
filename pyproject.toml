@@ -1,16 +1,17 @@
 [tool.poetry]
-name = "ln-fee-manager"
-version = "0.1.1"
+name = "ln-fee-management-v0-1-1"
+version = "0.1.0"
 description = ""
 authors = ["kazuW <35624002+kazuW@users.noreply.github.com>"]
 readme = "README.md"
-packages = [{include = "ln-fee-manager"}]
+packages = [{include = "ln_fee_management_v0"}]
 
 [tool.poetry.dependencies]
 python = "3.11.3"
 pandas = "2.2.3"
 requests = "2.32.3"
-pyinstaller = "6.12.0"
+pyinstaller = "6.13.0"
+setuptools = "<81"
 
 
 [build-system]
